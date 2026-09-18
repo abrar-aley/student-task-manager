@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Courses{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="mb-0">Courses</h4>
+  <a href="{{ url_for('courses.new') }}" class="btn btn-accent btn-sm d-flex align-items-center gap-1">
+    <i class="ti ti-plus"></i> New course
+  </a>
+</div>
+
+<div class="d-flex flex-column gap-2">
+  {% for course in courses %}
+    <div class="glass-panel-soft px-3 py-2 d-flex align-items-center justify-content-between">
+      <div>
+        <p class="mb-0" style="font-size: 0.9rem;">{{ course.name }}</p>
+        <p class="text-muted-app mb-0" style="font-size: 0.75rem;">
+          {{ course.code or '' }}{% if course.instructor %} · {{ course.instructor }}{% endif %}
+        </p>
+      </div>
+      <div class="d-flex gap-3">
+        <a href="{{ url_for('courses.edit', course_id=course.id) }}"><i class="ti ti-edit text-muted-app"></i></a>
+        <form action="{{ url_for('courses.delete', course_id=course.id) }}" method="POST" onsubmit="return confirm('Delete this course and all its tasks?');">
+          <button type="submit" class="btn btn-link p-0"><i class="ti ti-trash text-muted-app"></i></button>
+        </form>
+      </div>
+    </div>
+  {% else %}
+    <p class="text-muted-app">No courses yet. Add your first one to start creating tasks.</p>
+  {% endfor %}
+</div>
+{% endblock %}

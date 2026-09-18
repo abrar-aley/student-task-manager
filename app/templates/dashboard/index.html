@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h4 class="mb-0">Hey, {{ current_user.email.split('@')[0] }}</h4>
+  </div>
+  <a href="{{ url_for('tasks.new') }}" class="btn btn-accent d-none d-lg-inline-flex align-items-center gap-1">
+    <i class="ti ti-plus"></i> New task
+  </a>
+</div>
+
+<div class="row g-2 mb-4">
+  <div class="col-12 col-lg-4">
+    <div class="glass-panel p-3">
+      <p class="text-muted-app mb-1" style="font-size: 0.75rem;">Due today</p>
+      <span style="font-size: 1.75rem; font-weight: 700;">{{ due_today|length }}</span>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    <div class="glass-panel p-3">
+      <p class="mb-1" style="font-size: 0.75rem; color: var(--danger);">Overdue</p>
+      <span style="font-size: 1.75rem; font-weight: 700; color: var(--danger);">{{ overdue|length }}</span>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    <div class="glass-panel p-3">
+      <p class="text-muted-app mb-1" style="font-size: 0.75rem;">This week</p>
+      <span style="font-size: 1.75rem; font-weight: 700;">{{ upcoming_week|length }}</span>
+    </div>
+  </div>
+</div>
+
+<h6 class="mb-2">Up next</h6>
+<div class="d-flex flex-column gap-2">
+  {% for task in overdue %}
+    <div class="glass-panel-soft px-3 py-2 d-flex align-items-center gap-2">
+      <span class="priority-dot overdue"></span>
+      <div class="flex-grow-1" style="min-width: 0;">
+        <p class="mb-0 text-truncate" style="font-size: 0.85rem;">{{ task.title }}</p>
+        <p class="text-muted-app mb-0" style="font-size: 0.75rem;">{{ task.course.code or task.course.name }}</p>
+      </div>
+      <span class="badge-overdue">OVERDUE</span>
+    </div>
+  {% endfor %}
+  {% for task in due_today %}
+    <div class="glass-panel-soft px-3 py-2 d-flex align-items-center gap-2">
+      <span class="priority-dot today"></span>
+      <div class="flex-grow-1" style="min-width: 0;">
+        <p class="mb-0 text-truncate" style="font-size: 0.85rem;">{{ task.title }}</p>
+        <p class="text-muted-app mb-0" style="font-size: 0.75rem;">{{ task.course.code or task.course.name }}</p>
+      </div>
+      <span class="badge-today">Today</span>
+    </div>
+  {% endfor %}
+  {% for task in upcoming_week %}
+    <div class="glass-panel-soft px-3 py-2 d-flex align-items-center gap-2">
+      <span class="priority-dot later"></span>
+      <div class="flex-grow-1" style="min-width: 0;">
+        <p class="mb-0 text-truncate" style="font-size: 0.85rem;">{{ task.title }}</p>
+        <p class="text-muted-app mb-0" style="font-size: 0.75rem;">{{ task.course.code or task.course.name }}</p>
+      </div>
+      <span class="text-muted-app" style="font-size: 0.75rem;">{{ task.due_date.strftime('%b %d') }}</span>
+    </div>
+  {% endfor %}
+  {% if not (overdue or due_today or upcoming_week) %}
+    <p class="text-muted-app">No tasks yet — add your first course, then a task.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block fab %}
+<a href="{{ url_for('tasks.new') }}" class="fab-add d-lg-none" aria-label="Add task">
+  <i class="ti ti-plus" style="font-size: 22px; color: var(--accent-ink);"></i>
+</a>
+{% endblock %}

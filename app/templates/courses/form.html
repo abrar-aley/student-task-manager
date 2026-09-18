@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit course' if course else 'New course' }}{% endblock %}
+
+{% block content %}
+<h4 class="mb-3">{{ 'Edit course' if course else 'New course' }}</h4>
+<div class="glass-panel p-4" style="max-width: 420px;">
+  <form method="POST">
+    <div class="mb-3">
+      <label>Course name</label>
+      <input type="text" name="name" class="form-control" value="{{ course.name if course else '' }}" required autofocus>
+    </div>
+    <div class="mb-3">
+      <label>Code (optional)</label>
+      <input type="text" name="code" class="form-control" value="{{ course.code if course else '' }}" placeholder="CSC-241">
+    </div>
+    <div class="mb-3">
+      <label>Instructor (optional)</label>
+      <input type="text" name="instructor" class="form-control" value="{{ course.instructor if course else '' }}">
+    </div>
+    <button type="submit" class="btn btn-accent w-100 mt-2">Save course</button>
+  </form>
+</div>
+{% endblock %}

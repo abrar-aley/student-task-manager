@@ -1,0 +1,168 @@
+:root {
+  --bg-gradient: linear-gradient(160deg, #241B4E 0%, #140F2E 55%, #0B0818 100%);
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-bg-soft: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --accent: #C6FF5C;
+  --accent-ink: #14210A;
+  --danger: #FF6B57;
+  --text-primary: #FFFFFF;
+  --text-muted: #A79FD6;
+  --nav-inactive: #726A9E;
+  --radius-card: 16px;
+  --radius-pill: 999px;
+}
+
+body {
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+}
+
+.text-muted-app {
+  color: var(--text-muted) !important;
+}
+
+/* Core glass utility — apply to any Bootstrap card/panel */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+}
+
+.glass-panel-soft {
+  background: var(--glass-bg-soft);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+}
+
+/* Accent button, overrides Bootstrap's btn-primary */
+.btn-accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: none;
+  font-weight: 600;
+  border-radius: 10px;
+}
+.btn-accent:hover {
+  background: #d4ff7a;
+  color: var(--accent-ink);
+}
+
+.priority-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.priority-dot.overdue { background: var(--danger); }
+.priority-dot.today { background: var(--accent); }
+.priority-dot.later { background: rgba(255, 255, 255, 0.3); }
+
+.badge-overdue { color: var(--danger); font-weight: 600; font-size: 0.7rem; }
+.badge-today { color: var(--accent); font-weight: 600; font-size: 0.7rem; }
+
+/* Sidebar — desktop only (lg and up) */
+.sidebar-nav {
+  width: 64px;
+  min-height: 100vh;
+  background: rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+.sidebar-nav a, .bottom-nav a {
+  color: var(--nav-inactive);
+  font-size: 1.1rem;
+}
+.sidebar-nav a.active, .bottom-nav a.active {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-radius: 8px;
+}
+
+/* Bottom nav — mobile only (below lg) */
+.bottom-nav {
+  background: rgba(20, 15, 46, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Floating action button — mobile only */
+.fab-add {
+  position: fixed;
+  bottom: 76px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(198, 255, 92, 0.35);
+  z-index: 1030;
+}
+
+/* Form controls themed to match the glass aesthetic */
+.form-control, .form-select {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-primary);
+  border-radius: 10px;
+}
+.form-control:focus, .form-select:focus {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: var(--accent);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 0.2rem rgba(198, 255, 92, 0.15);
+}
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+}
+
+/* Native <select> dropdown panel: fix invisible white-on-white options
+   and restyle the panel + hover/selected state to match the theme */
+select.form-select option,
+select.form-control option {
+  background: #1B1440;
+  color: var(--text-primary);
+  padding: 8px;
+}
+select.form-select option:hover,
+select.form-select option:checked,
+select.form-select option:focus,
+select.form-control option:hover,
+select.form-control option:checked,
+select.form-control option:focus {
+  background: var(--accent) !important;
+  color: var(--accent-ink) !important;
+}
+
+/* Native date input: dark chrome + accent-colored focused segment
+   instead of the browser's default white/blue */
+input[type="date"] {
+  color-scheme: dark;
+  accent-color: var(--accent);
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.3);
+  cursor: pointer;
+}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit task' if task else 'New task' }}{% endblock %}
+
+{% block content %}
+<h4 class="mb-3">{{ 'Edit task' if task else 'New task' }}</h4>
+<div class="glass-panel p-4" style="max-width: 480px;">
+  <form method="POST">
+    <div class="mb-3">
+      <label>Title</label>
+      <input type="text" name="title" class="form-control" value="{{ task.title if task else '' }}" required autofocus>
+    </div>
+    <div class="mb-3">
+      <label>Description (optional)</label>
+      <textarea name="description" class="form-control" rows="3">{{ task.description if task else '' }}</textarea>
+    </div>
+    <div class="row g-2 mb-3">
+      <div class="col-6">
+        <label>Course</label>
+        <select name="course_id" class="form-select" required>
+          {% for c in courses %}
+            <option value="{{ c.id }}" {{ 'selected' if task and task.course_id == c.id }}>{{ c.code or c.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-6">
+        <label>Due date</label>
+        <input type="date" name="due_date" class="form-control" value="{{ task.due_date.isoformat() if task else '' }}" required>
+      </div>
+    </div>
+    <div class="row g-2 mb-3">
+      <div class="col-6">
+        <label>Priority</label>
+        <select name="priority" class="form-select">
+          {% for p in priorities %}
+            <option value="{{ p }}" {{ 'selected' if task and task.priority == p or (not task and p == 'Medium') }}>{{ p }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-6">
+        <label>Category</label>
+        <select name="category" class="form-select">
+          {% for cat in categories %}
+            <option value="{{ cat }}" {{ 'selected' if task and task.category == cat or (not task and cat == 'Assignment') }}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-accent w-100 mt-2">Save task</button>
+  </form>
+</div>
+{% endblock %}

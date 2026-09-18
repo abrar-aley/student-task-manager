@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Student Task Manager{% endblock %}</title>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+<body>
+
+{% if current_user.is_authenticated %}
+<div class="d-flex">
+
+  <!-- Sidebar: desktop only -->
+  <nav class="d-none d-lg-flex flex-column align-items-center py-3 gap-4 sidebar-nav flex-shrink-0">
+    <a href="{{ url_for('dashboard.index') }}" class="p-2 {{ 'active' if request.endpoint == 'dashboard.index' }}">
+      <i class="ti ti-home"></i>
+    </a>
+    <a href="{{ url_for('tasks.index') }}" class="p-2 {{ 'active' if request.blueprint == 'tasks' }}">
+      <i class="ti ti-checklist"></i>
+    </a>
+    <a href="{{ url_for('courses.index') }}" class="p-2 {{ 'active' if request.blueprint == 'courses' }}">
+      <i class="ti ti-book"></i>
+    </a>
+    <form action="{{ url_for('auth.logout') }}" method="POST" class="mt-auto">
+      <button type="submit" class="btn btn-link p-2 text-decoration-none" style="color: var(--nav-inactive);">
+        <i class="ti ti-logout"></i>
+      </button>
+    </form>
+  </nav>
+
+  <main class="flex-grow-1 p-3 p-lg-4" style="padding-bottom: 90px;">
+    <div class="container-fluid px-0" style="max-width: 900px;">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="glass-panel-soft px-3 py-2 mb-3" style="border-color: {{ 'var(--danger)' if category == 'error' else 'var(--glass-border)' }};">
+              <small>{{ message }}</small>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- Bottom nav: mobile only -->
+  <nav class="d-lg-none fixed-bottom bottom-nav d-flex justify-content-around align-items-center py-2">
+    <a href="{{ url_for('dashboard.index') }}" class="{{ 'active p-2' if request.endpoint == 'dashboard.index' else 'p-2' }}"><i class="ti ti-home"></i></a>
+    <a href="{{ url_for('tasks.index') }}" class="{{ 'active p-2' if request.blueprint == 'tasks' else 'p-2' }}"><i class="ti ti-checklist"></i></a>
+    <a href="{{ url_for('courses.index') }}" class="{{ 'active p-2' if request.blueprint == 'courses' else 'p-2' }}"><i class="ti ti-book"></i></a>
+  </nav>
+
+  {% block fab %}{% endblock %}
+
+</div>
+{% else %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="container-fluid px-3 pt-3" style="max-width: 500px;">
+        {% for category, message in messages %}
+          <div class="glass-panel-soft px-3 py-2 mb-2" style="border-color: {{ 'var(--danger)' if category == 'error' else 'var(--glass-border)' }};">
+            <small>{{ message }}</small>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  {% block guest_content %}{% endblock %}
+{% endif %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
