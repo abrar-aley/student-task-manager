@@ -49,11 +49,16 @@
     </div>
   </main>
 
-  <!-- Bottom nav: mobile only -->
+    <!-- Bottom nav: mobile only -->
   <nav class="d-lg-none fixed-bottom bottom-nav d-flex justify-content-around align-items-center py-2">
     <a href="{{ url_for('dashboard.index') }}" class="{{ 'active p-2' if request.endpoint == 'dashboard.index' else 'p-2' }}"><i class="ti ti-home"></i></a>
     <a href="{{ url_for('tasks.index') }}" class="{{ 'active p-2' if request.blueprint == 'tasks' else 'p-2' }}"><i class="ti ti-checklist"></i></a>
     <a href="{{ url_for('courses.index') }}" class="{{ 'active p-2' if request.blueprint == 'courses' else 'p-2' }}"><i class="ti ti-book"></i></a>
+    <form action="{{ url_for('auth.logout') }}" method="POST" class="d-flex">
+      <button type="submit" class="btn btn-link p-2" style="color: var(--nav-inactive); line-height: 0;">
+        <i class="ti ti-logout"></i>
+      </button>
+    </form>
   </nav>
 
   {% block fab %}{% endblock %}
